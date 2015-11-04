@@ -10,4 +10,4 @@ An Android Studio plugin designed to facilitate importing assets into your Andro
 - Import! (if folders don't exist they will be created automatically)
 
 #License
-This project is licensed under the terms of the [Apache 2.0 License] 
+This project is licensed under the terms of the [Apache 2.0 License] (https://github.com/davy307/AndroidAssetImporter/blob/master/LICENSE.md)
