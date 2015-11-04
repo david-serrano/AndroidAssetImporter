@@ -1,0 +1,50 @@
+<idea-plugin version="2">
+    <id>com.davy307.androidassetimporter</id>
+    <name>Android Asset Importer</name>
+    <version>1.02</version>
+    <vendor email="davy307@gmail.com" url="">Independent development</vendor>
+
+    <description><![CDATA[
+      This plugin is designed to facilitate the process of importing multiple assets into Android Studio in a painless manner.<BR>
+      - Select an Android Project top level folder<BR>
+      - Select a folder with appropriate assets, following the agreed naming convention.<BR>
+      - Rename your asset.<BR>
+      - Select densities from list of available ones.<BR>
+      - Import! (if folders don't exist they will be created automatically)
+    ]]></description>
+
+    <change-notes><![CDATA[
+        - Modify end state to restart if more imports are needed.
+        - Improve messages readability.
+    ]]>
+    </change-notes>
+
+    <!-- please see https://confluence.jetbrains.com/display/IDEADEV/Build+Number+Ranges for description -->
+    <idea-version since-build="131"/>
+
+    <!-- please see https://confluence.jetbrains.com/display/IDEADEV/Plugin+Compatibility+with+IntelliJ+Platform+Products
+         on how to target different products -->
+    <!-- uncomment to enable plugin in all products
+    <depends>com.intellij.modules.lang</depends>
+    -->
+
+    <extensions defaultExtensionNs="com.intellij">
+        <!-- Add your extensions here -->
+    </extensions>
+
+    <application-components>
+        <!-- Add your application components here -->
+    </application-components>
+
+    <project-components>
+        <!-- Add your project components here -->
+    </project-components>
+
+    <actions>
+        <group id="MyPlugin.AssetImport" text="Asset Importer" description="Asset Import">
+            <action id="MyPlugin.OpenFilePicker" class="InfoDialog" text="Open" description="Open Asset Importer"/>
+            <add-to-group group-id="MainMenu" relative-to-action="HelpMenu" anchor="after"/>
+        </group>
+    </actions>
+
+</idea-plugin>
