@@ -2,8 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="61ad1471-d83e-42a4-a196-0ebb23b56ddf" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/AndroidAssetImporter.jar" afterPath="$PROJECT_DIR$/AndroidAssetImporter.jar" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/META-INF/plugin.xml" afterPath="$PROJECT_DIR$/META-INF/plugin.xml" />
     </list>
     <ignored path="AssetImport.iws" />
@@ -29,8 +27,8 @@
       <file leaf-file-name="plugin.xml" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/META-INF/plugin.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.39732888">
-              <caret line="14" column="74" selection-start-line="14" selection-start-column="74" selection-end-line="14" selection-end-column="74" />
+            <state vertical-scroll-proportion="0.68113524">
+              <caret line="24" column="0" selection-start-line="24" selection-start-column="0" selection-end-line="24" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -259,7 +257,7 @@
     <property name="extract.method.default.visibility" value="private" />
     <property name="UI_DESIGNER_EDITOR_MODE.UIDesignerToolWindowManager.WIDTH" value="325" />
     <property name="FullScreen" value="false" />
-    <property name="settings.editor.selected.configurable" value="editor.preferences.appearance" />
+    <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
     <property name="settings.editor.splitter.proportion" value="0.2" />
     <property name="UI_DESIGNER_EDITOR_MODE.PaletteManager.SHOW" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
@@ -1077,8 +1075,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/META-INF/plugin.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.39732888">
-          <caret line="14" column="74" selection-start-line="14" selection-start-column="74" selection-end-line="14" selection-end-column="74" />
+        <state vertical-scroll-proportion="0.68113524">
+          <caret line="24" column="0" selection-start-line="24" selection-start-column="0" selection-end-line="24" selection-end-column="0" />
           <folding />
         </state>
       </provider>

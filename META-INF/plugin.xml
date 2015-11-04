@@ -7,12 +7,12 @@
     <description><![CDATA[
       This plugin is designed to facilitate the process of importing multiple assets into Android Studio in a painless manner.<BR><BR>
 
-      Usage:<BR>
+      Usage:<BR><BR>
       - Select an Android Project top level folder<BR>
       - Select a folder with appropriate assets, following the agreed naming convention.<BR>
       - Rename your asset.<BR>
       - Select densities from list of available ones.<BR>
-      - Import! (if folders don't exist they will be created automatically
+      - Import! (if folders don't exist they will be created automatically<BR><BR>
 
       Find the source code on my <a href="https://github.com/davy307/AndroidAssetImporter">GitHub page</a>.
     ]]></description>
