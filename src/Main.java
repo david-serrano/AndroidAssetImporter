@@ -33,7 +33,15 @@ public class Main {
     private boolean xxxhdpiSelected = false;
     private int dpiCount = 5;
     private boolean assetDirectorySet = false;
-    private JFileChooser chooser = new JFileChooser();
+    private JFileChooser chooser = new JFileChooser() {
+        public void approveSelection() {
+            if (getSelectedFile().isFile()) {
+                return;
+            } else
+                super.approveSelection();
+        }
+    };
+    ;
     private Project project;
     private File assetDirectory;
     private File projectDirectory;
@@ -168,6 +176,7 @@ public class Main {
         assetDirectory = null;
         mainLayout.setAssetFolderLabel("Not Set");
     }
+
     private boolean setCheckBoxState(boolean dpi) {
         if (dpi) {
             dpiCount--;
@@ -318,7 +327,7 @@ public class Main {
 
                 chooser.setCurrentDirectory(new File(System.getProperty("user.home")));
                 chooser.setDialogTitle("Select Asset Folder");
-                chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+                chooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
                 chooser.setAcceptAllFileFilterUsed(false);
 
                 showChooser(ChoiceType.ASSET);
@@ -359,10 +368,9 @@ public class Main {
             }
             mainLayout.getMessageLabel().setForeground(successColor);
             mainLayout.getMessageLabel().setText("All assets imported successfully.");
-            if(Messages.showOkCancelDialog(project, "Asset import successful, do you want to import another asset?", "Import Successful", "Import another", "I'm done", Messages.getQuestionIcon()) == Messages.OK) {
+            if (Messages.showOkCancelDialog(project, "Asset import successful, do you want to import another asset?", "Import Successful", "Import another", "I'm done", Messages.getQuestionIcon()) == Messages.OK) {
                 resetUI();
-            }
-            else {
+            } else {
                 frame.dispatchEvent(new WindowEvent(frame, WindowEvent.WINDOW_CLOSING));
             }
 
