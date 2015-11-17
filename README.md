@@ -11,3 +11,24 @@ An Android Studio plugin designed to facilitate importing assets into your Andro
 
 #License
 This project is licensed under the terms of the [Apache 2.0 License] (https://github.com/davy307/AndroidAssetImporter/blob/master/LICENSE.md)
+
+#Screenshots
+- Welcome Dialog:
+
+![Welcome dialog](https://github.com/david-serrano/AndroidAssetImporter/blob/master/screenshots/sample_info.png?raw=true "Welcome Dialog")
+
+- Main Screen:
+
+![Main Screen](https://github.com/david-serrano/AndroidAssetImporter/blob/master/screenshots/sample_main.png?raw=true "Main Screen")
+
+- Extension Selection:
+
+![Extension Selection](https://github.com/david-serrano/AndroidAssetImporter/blob/master/screenshots/sample_extensions.png?raw=true "Extension Selection")
+
+- Compliance Checking:
+
+![Compliance Checking](https://github.com/david-serrano/AndroidAssetImporter/blob/master/screenshots/sample_error.png?raw=true "Compliance Checking")
+
+- Sequential Multiple Imports:
+
+![Sequential Multiple Imports](https://github.com/david-serrano/AndroidAssetImporter/blob/master/screenshots/sample_success.png?raw=true "Sequential Multiple Imports")
