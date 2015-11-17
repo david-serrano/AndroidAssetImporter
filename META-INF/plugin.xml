@@ -18,9 +18,9 @@
     ]]></description>
 
     <change-notes><![CDATA[
-        - Added "Don't show again to entry dialog".
-        - Added menu options to close and reset defaults.
-        - Added asset preview.
+        - Added "Don't show again to entry dialog".<BR>
+        - Added menu options to close and reset defaults.<BR>
+        - Added asset preview.<BR>
         - Various improvements and bug fixes.
     ]]>
     </change-notes>
