@@ -39,4 +39,10 @@ public class FileFinder {
 
         return null;
     }
+
+    public boolean isAndroidProject(File directory) {
+        String androidProject = findDir(directory, "app");
+        String gradle = findDir(directory, "gradle");
+        return androidProject != null && gradle != null;
+    }
 }

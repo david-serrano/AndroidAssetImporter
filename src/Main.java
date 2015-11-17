@@ -16,7 +16,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.util.ArrayList;
 
-public class Main implements MainLayout.MenuInterface {
+public class Main implements MainLayout.MenuInterface, FileChooser.ChooserCallback {
     private static final String RES_PATH = "/app/src/main/res";
     private static final String EXT_PNG = ".png";
     private static final String EXT_JPG = ".jpg";
@@ -34,15 +34,7 @@ public class Main implements MainLayout.MenuInterface {
     private boolean xxxhdpiSelected = false;
     private int dpiCount = 5;
     private boolean assetDirectorySet = false;
-    private JFileChooser chooser = new JFileChooser() {
-        public void approveSelection() {
-            if (getSelectedFile().isFile()) {
-                return;
-            } else
-                super.approveSelection();
-        }
-    };
-    ;
+    private FileChooser fileChooser = new FileChooser();
     private Project project;
     private File assetDirectory;
     private File projectDirectory;
@@ -56,8 +48,9 @@ public class Main implements MainLayout.MenuInterface {
 
     enum ChoiceType {
         ASSET,
-        PROJECT;
+        PROJECT
     }
+
     public Main(AnActionEvent e) {
         project = e.getData(PlatformDataKeys.PROJECT);
         mainLayout = new MainLayout();
@@ -80,13 +73,12 @@ public class Main implements MainLayout.MenuInterface {
             e1.printStackTrace();
         }
         frame.setFocusableWindowState(true);
-
     }
 
     private void initLayout() {
         projectDirectory = new File(project.getBasePath());
         mainLayout.setLocationDirectory(projectDirectory.getAbsolutePath());
-        if (!isAndroidProject(projectDirectory)) {
+        if (!finder.isAndroidProject(projectDirectory)) {
             setErrorMessage("Current directory is not an Android project.");
         }
         assetName = mainLayout.getNameField();
@@ -153,13 +145,15 @@ public class Main implements MainLayout.MenuInterface {
         });
     }
 
-    private void setErrorMessage(String message) {
+    @Override
+    public void setErrorMessage(String message) {
         mainLayout.getMessageLabel().setForeground(errorColor);
         mainLayout.getMessageLabel().setText(message);
         frame.pack();
     }
 
-    private void resetSelections() {
+    @Override
+    public void resetSelections() {
         mdpiSelected = false;
         hdpiSelected = false;
         xhdpiSelected = false;
@@ -287,36 +281,10 @@ public class Main implements MainLayout.MenuInterface {
         }
     }
 
-    private void showChooser(ChoiceType type) {
-        mainLayout.getMessageLabel().setText("");
-        if (chooser.showOpenDialog(mainLayout.getMainPanel()) == JFileChooser.APPROVE_OPTION) {
-            if (type == ChoiceType.ASSET) {
-                resetSelections();
-                prepareAssets();
-            } else if (type == ChoiceType.PROJECT) {
-                File tempDirectory = chooser.getSelectedFile();
-                if (isAndroidProject(tempDirectory)) {
-                    projectDirectory = tempDirectory;
-                    mainLayout.setLocationDirectory(projectDirectory.toString());
-                } else {
-                    setErrorMessage("Selected directory is not an Android project.");
-                }
-            }
-            frame.pack();
-        } else {
-            System.out.println("No Selection");
-        }
-    }
-
-    private boolean isAndroidProject(File directory) {
-        String androidProject = finder.findDir(directory, "app");
-        String gradle = finder.findDir(directory, "gradle");
-        return androidProject != null && gradle != null;
-    }
-
-    private void prepareAssets() {
+    @Override
+    public void prepareAssets(File selectedFile) {
         assetDirectorySet = true;
-        assetDirectory = chooser.getSelectedFile();
+        assetDirectory = selectedFile;
         setDpiChecks(assetDirectory);
         mainLayout.getNameField().setEnabled(true);
         mainLayout.setAssetFolderLabel(assetDirectory.toString());
@@ -324,13 +292,19 @@ public class Main implements MainLayout.MenuInterface {
         frame.pack();
     }
 
+    @Override
+    public void setProjectDirectory(File directory) {
+        projectDirectory = directory;
+    }
+
     private void setButtonListeners() {
+        FileChooser.ChooserCallback callback = this;
         ActionListener folderChooserListener = new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                chooser.setCurrentDirectory(projectDirectory);
-                chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-                showChooser(ChoiceType.PROJECT);
+                fileChooser.getChooser().setCurrentDirectory(projectDirectory);
+                fileChooser.getChooser().setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+                fileChooser.showChooser(ChoiceType.PROJECT, mainLayout, callback, frame);
             }
         };
         mainLayout.setDirectoryOnClick(folderChooserListener);
@@ -339,12 +313,12 @@ public class Main implements MainLayout.MenuInterface {
             @Override
             public void actionPerformed(ActionEvent e) {
 
-                chooser.setCurrentDirectory(new File(System.getProperty("user.home")));
-                chooser.setDialogTitle("Select Asset Folder");
-                chooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
-                chooser.setAcceptAllFileFilterUsed(false);
+                fileChooser.getChooser().setCurrentDirectory(new File(System.getProperty("user.home")));
+                fileChooser.getChooser().setDialogTitle("Select Asset Folder");
+                fileChooser.getChooser().setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
+                fileChooser.getChooser().setAcceptAllFileFilterUsed(false);
 
-                showChooser(ChoiceType.ASSET);
+                fileChooser.showChooser(ChoiceType.ASSET, mainLayout, callback, frame);
             }
 
         };
@@ -431,19 +405,15 @@ public class Main implements MainLayout.MenuInterface {
     }
 
     private void createAsset(Asset asset, File file) {
-        // System.out.println("Asset path is: " + asset.getFile().getAbsolutePath());
         File f = new File(file.getAbsolutePath() + "/" + assetName.getText() + assetExtension);
-        //  System.out.println("new file path = " + file.getAbsolutePath() + "file name = " + asset.getFile().getName());
-        //   System.out.println("file path is: " + f.getAbsolutePath());
         if (!f.exists()) {
             try {
                 Files.copy(asset.getFile().toPath(), f.toPath());
-                //          System.out.println("file asset created successfully");
             } catch (IOException e) {
                 e.printStackTrace();
             }
         } else {
-            //      System.out.println("Asset already created");
+            //asset already created
         }
     }
 
