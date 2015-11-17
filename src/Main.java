@@ -4,6 +4,7 @@ import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.Messages;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
@@ -11,6 +12,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -282,7 +284,24 @@ public class Main implements MainLayout.MenuInterface, FileChooser.ChooserCallba
         assetDirectorySet = true;
         assetDirectory = selectedFile;
         String resolution = setDpiChecks(assetDirectory);
-        System.out.println("highest resolution: " + resolution);
+        if (!resolution.isEmpty()) {
+            ArrayList<Asset> assets = new ArrayList<>();
+            collectAssets(assets);
+            for (Asset a : assets) {
+                if (a.getType().toString().toLowerCase().equals(resolution)) {
+                    File img = a.getFile();
+                    try {
+                        BufferedImage buffImg = ImageIO.read(img);
+                        ImageIcon icon = new ImageIcon(buffImg);
+                        mainLayout.getImagePreviewLabel().setText("");
+                        mainLayout.getImagePreviewLabel().setIcon(icon);
+                    } catch (IOException e) {
+                        mainLayout.getImagePreviewLabel().setText("Unable to load preview.");
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }
         mainLayout.getNameField().setEnabled(true);
         mainLayout.setAssetFolderLabel(assetDirectory.toString());
         setImportButtonState();
@@ -324,23 +343,27 @@ public class Main implements MainLayout.MenuInterface, FileChooser.ChooserCallba
         ActionListener importListener = new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                File[] directoryListing = assetDirectory.listFiles();
                 ArrayList<Asset> assets = new ArrayList<>();
-                if (directoryListing != null) {
-                    for (File child : directoryListing) {
-                        Asset tempFile = sortFile(child);
-                        if (tempFile != null) {
-                            assets.add(tempFile);
-                        }
-                    }
-                    //  System.out.println(String.format("found %d valid files in this directory", assets.size()));
-                    if (assets.size() > 0) {
-                        writeFiles(assets);
-                    }
+                collectAssets(assets);
+
+                if (assets.size() > 0) {
+                    writeFiles(assets);
                 }
             }
         };
         mainLayout.setImportClick(importListener);
+    }
+
+    private void collectAssets(ArrayList<Asset> assets) {
+        File[] directoryListing = assetDirectory.listFiles();
+        if (directoryListing != null) {
+            for (File child : directoryListing) {
+                Asset tempFile = sortFile(child);
+                if (tempFile != null) {
+                    assets.add(tempFile);
+                }
+            }
+        }
     }
 
     private void writeFiles(ArrayList<Asset> assets) {

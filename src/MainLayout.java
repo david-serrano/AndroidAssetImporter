@@ -28,11 +28,11 @@ public class MainLayout {
     private JLabel imagePreviewLabel;
 
     public interface MenuInterface {
+
         void closeProgram();
-
         void resetDefaults();
-    }
 
+    }
     public void setupToolbar(MenuInterface menuInterface) {
         JMenuBar menuBar = new JMenuBar();
         JMenu file = new JMenu("File");
@@ -57,6 +57,10 @@ public class MainLayout {
         menuBar.add(file);
         menuBar.add(settings);
         toolbar.add(menuBar);
+    }
+
+    public JLabel getImagePreviewLabel() {
+        return imagePreviewLabel;
     }
 
     public void setLocationDirectory(String dir) {
