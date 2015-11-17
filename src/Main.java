@@ -174,6 +174,7 @@ public class Main implements MainLayout.MenuInterface, FileChooser.ChooserCallba
         setErrorMessage("");
         assetDirectory = null;
         mainLayout.setAssetFolderLabel("Not Set");
+        mainLayout.getImagePreviewLabel().setText("No folder selected.");
     }
 
     private boolean setCheckBoxState(boolean dpi) {
@@ -281,10 +282,10 @@ public class Main implements MainLayout.MenuInterface, FileChooser.ChooserCallba
 
     @Override
     public void prepareAssets(File selectedFile) {
-        assetDirectorySet = true;
-        assetDirectory = selectedFile;
-        String resolution = setDpiChecks(assetDirectory);
+        String resolution = setDpiChecks(selectedFile);
         if (!resolution.isEmpty()) {
+            assetDirectorySet = true;
+            assetDirectory = selectedFile;
             ArrayList<Asset> assets = new ArrayList<>();
             collectAssets(assets);
             for (Asset a : assets) {
@@ -301,10 +302,20 @@ public class Main implements MainLayout.MenuInterface, FileChooser.ChooserCallba
                     }
                 }
             }
+            mainLayout.getNameField().setEnabled(true);
+            mainLayout.setAssetFolderLabel(assetDirectory.toString());
+            setImportButtonState();
         }
-        mainLayout.getNameField().setEnabled(true);
-        mainLayout.setAssetFolderLabel(assetDirectory.toString());
-        setImportButtonState();
+        else {
+            mainLayout.getNameField().setEnabled(false);
+            mainLayout.setAssetFolderLabel(selectedFile.toString());
+            mainLayout.getImagePreviewLabel().setText("Unable to load preview.");
+            if(mainLayout.getImagePreviewLabel().getIcon()!= null) {
+                mainLayout.getImagePreviewLabel().setIcon(null);
+            }
+            setErrorMessage("No assets found in this folder.");
+        }
+
         frame.pack();
     }
 
@@ -320,6 +331,7 @@ public class Main implements MainLayout.MenuInterface, FileChooser.ChooserCallba
             public void actionPerformed(ActionEvent e) {
                 fileChooser.getChooser().setCurrentDirectory(projectDirectory);
                 fileChooser.getChooser().setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+
                 fileChooser.showChooser(ChoiceType.PROJECT, mainLayout, callback, frame);
             }
         };
@@ -328,7 +340,6 @@ public class Main implements MainLayout.MenuInterface, FileChooser.ChooserCallba
         ActionListener assetChooserListener = new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
                 fileChooser.getChooser().setCurrentDirectory(new File(System.getProperty("user.home")));
                 fileChooser.getChooser().setDialogTitle("Select Asset Folder");
                 fileChooser.getChooser().setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);

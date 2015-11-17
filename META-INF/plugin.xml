@@ -1,7 +1,7 @@
 <idea-plugin version="2">
     <id>com.davy307.androidassetimporter</id>
     <name>Android Asset Importer</name>
-    <version>2.0.0</version>
+    <version>2.0.1</version>
     <vendor email="davy307@gmail.com" url="https://github.com/davy307/">Independent development</vendor>
 
     <description><![CDATA[
