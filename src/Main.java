@@ -18,14 +18,14 @@ import java.util.ArrayList;
 
 public class Main implements MainLayout.MenuInterface, FileChooser.ChooserCallback {
     private static final String RES_PATH = "/app/src/main/res";
-    private static final String EXT_PNG = ".png";
-    private static final String EXT_JPG = ".jpg";
-    private static final String EXT_BMP = ".bmp";
+
+
     private static final String MDPI = "mdpi";
     private static final String XXXHDPI = "xxxhdpi";
     private static final String XXHDPI = "xxhdpi";
     private static final String XHDPI = "xhdpi";
     private static final String HDPI = "hdpi";
+
     private MainLayout mainLayout;
     private boolean mdpiSelected = false;
     private boolean hdpiSelected = false;
@@ -41,7 +41,7 @@ public class Main implements MainLayout.MenuInterface, FileChooser.ChooserCallba
     private JFrame frame;
     private JTextField assetName;
     private boolean validAssetName = false;
-    private String assetExtension = EXT_PNG;
+    private String assetExtension;
     private FileFinder finder = new FileFinder();
     private Color errorColor = new Color(187, 54, 58);
     private Color successColor = new Color(84, 187, 68);
@@ -130,19 +130,8 @@ public class Main implements MainLayout.MenuInterface, FileChooser.ChooserCallba
     }
 
     private void setExtensionListener() {
-        JComboBox extension = mainLayout.getAssetFileExtension();
-        extension.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (extension.getSelectedIndex() == 0) {
-                    assetExtension = EXT_PNG;
-                } else if (extension.getSelectedIndex() == 1) {
-                    assetExtension = EXT_JPG;
-                } else if (extension.getSelectedIndex() == 2) {
-                    assetExtension = EXT_BMP;
-                }
-            }
-        });
+        ExtensionManager extensionManager = new ExtensionManager();
+        assetExtension = extensionManager.manageBox(mainLayout.getAssetFileExtension());
     }
 
     @Override
@@ -198,37 +187,44 @@ public class Main implements MainLayout.MenuInterface, FileChooser.ChooserCallba
         return dpi;
     }
 
-    private void setDpiChecks(File root) {
+    private String setDpiChecks(File root) {
+        String highestResolution = "";
         boolean mdpiAsset = finder.containsDpi(root, MDPI);
         if (mdpiAsset) {
             mdpiSelected = setCheckBoxState(mdpiSelected);
             mainLayout.getMdpiOption().setEnabled(mdpiSelected);
             mainLayout.getMdpiOption().setSelected(mdpiSelected);
+            highestResolution = MDPI;
         }
         boolean xhdpiAsset = finder.containsDpi(root, XHDPI);
         if (xhdpiAsset) {
             xhdpiSelected = setCheckBoxState(xhdpiSelected);
             mainLayout.getXhdpiOption().setEnabled(xhdpiSelected);
             mainLayout.getXhdpiOption().setSelected(xhdpiSelected);
+            highestResolution = XHDPI;
         }
         boolean xxhdpiAsset = finder.containsDpi(root, XXHDPI);
         if (xxhdpiAsset) {
             xxhdpiSelected = setCheckBoxState(xxxhdpiSelected);
             mainLayout.getXxhdpiOption().setEnabled(xxhdpiSelected);
             mainLayout.getXxhdpiOption().setSelected(xxhdpiSelected);
+            highestResolution = XXHDPI;
         }
         boolean xxxhdpiAsset = finder.containsDpi(root, XXXHDPI);
         if (xxxhdpiAsset) {
             xxxhdpiSelected = setCheckBoxState(xxxhdpiSelected);
             mainLayout.getXxxhdpiOption().setEnabled(xxxhdpiSelected);
             mainLayout.getXxxhdpiOption().setSelected(xxxhdpiSelected);
+            highestResolution = XXXHDPI;
         }
         boolean hdpiAsset = finder.containsDpi(root, HDPI);
         if (hdpiAsset) {
             hdpiSelected = setCheckBoxState(hdpiSelected);
             mainLayout.getHdpiOption().setEnabled(hdpiSelected);
             mainLayout.getHdpiOption().setSelected(hdpiSelected);
+            highestResolution = HDPI;
         }
+        return highestResolution;
     }
 
     private void setCheckBoxListeners() {
@@ -285,7 +281,8 @@ public class Main implements MainLayout.MenuInterface, FileChooser.ChooserCallba
     public void prepareAssets(File selectedFile) {
         assetDirectorySet = true;
         assetDirectory = selectedFile;
-        setDpiChecks(assetDirectory);
+        String resolution = setDpiChecks(assetDirectory);
+        System.out.println("highest resolution: " + resolution);
         mainLayout.getNameField().setEnabled(true);
         mainLayout.setAssetFolderLabel(assetDirectory.toString());
         setImportButtonState();
@@ -347,8 +344,6 @@ public class Main implements MainLayout.MenuInterface, FileChooser.ChooserCallba
     }
 
     private void writeFiles(ArrayList<Asset> assets) {
-        //  System.out.println("base path is: " + projectDirectory.getAbsolutePath());
-
         File app = new File(projectDirectory + RES_PATH);
         if (app.exists()) {
             for (Asset a : assets) {
@@ -399,7 +394,6 @@ public class Main implements MainLayout.MenuInterface, FileChooser.ChooserCallba
                 createAsset(asset, file);
             }
         } else {
-            //   System.out.println("folder exists");
             createAsset(asset, file);
         }
     }

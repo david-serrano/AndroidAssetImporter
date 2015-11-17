@@ -25,6 +25,7 @@ public class MainLayout {
     private JLabel assetName;
     private JLabel messageLabel;
     private JToolBar toolbar;
+    private JLabel imagePreviewLabel;
 
     public interface MenuInterface {
         void closeProgram();

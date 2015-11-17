@@ -211,6 +211,14 @@
             <border type="bevel-raised"/>
             <children/>
           </toolbar>
+          <component id="a0861" class="javax.swing.JLabel" binding="imagePreviewLabel">
+            <constraints>
+              <grid row="8" column="2" row-span="4" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <text value=""/>
+            </properties>
+          </component>
         </children>
       </grid>
     </children>
