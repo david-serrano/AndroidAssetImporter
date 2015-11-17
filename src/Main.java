@@ -175,6 +175,9 @@ public class Main implements MainLayout.MenuInterface, FileChooser.ChooserCallba
         assetDirectory = null;
         mainLayout.setAssetFolderLabel("Not Set");
         mainLayout.getImagePreviewLabel().setText("No folder selected.");
+        if(mainLayout.getImagePreviewLabel().getIcon() != null) {
+            mainLayout.getImagePreviewLabel().setIcon(null);
+        }
     }
 
     private boolean setCheckBoxState(boolean dpi) {
