@@ -33,6 +33,7 @@
     -->
 
     <extensions defaultExtensionNs="com.intellij">
+        <projectService serviceImplementation="PersistDialogService"/>
         <!-- Add your extensions here -->
     </extensions>
 

@@ -1,17 +1,11 @@
 import com.intellij.openapi.components.*;
 import com.intellij.util.xmlb.XmlSerializerUtil;
-import com.intellij.util.xmlb.annotations.Property;
 
-@com.intellij.openapi.components.State(name = "showDialog", storages = {@Storage(id = "default", file = StoragePathMacros.PROJECT_FILE)})
+@com.intellij.openapi.components.State(name = "PersistDialogService", storages = {@Storage(id = "default", file = "$PROJECT_FILE$"),
+        @Storage(id = "dir", file = "$PROJECT_CONFIG_DIR$/assetimportsettings.xml", scheme = StorageScheme.DIRECTORY_BASED)})
 public class PersistDialogService implements PersistentStateComponent<PersistDialogService> {
 
-   /* public static class State {
-        public boolean value;
-    }*/
-
-    // private State myState = new State();
-
-    public boolean stateValue;
+    private boolean stateValue = true;
 
     @Override
     public PersistDialogService getState() {
@@ -22,22 +16,12 @@ public class PersistDialogService implements PersistentStateComponent<PersistDia
     public void loadState(PersistDialogService state) {
         XmlSerializerUtil.copyBean(state, this);
     }
-/*
-    @Override
-    public State getState() {
-        return myState;
+
+    public boolean getStateValue() {
+        return this.stateValue;
     }
 
-    @Override
-    public void loadState(State state) {
-        myState = state;
+    public void setStateValue(boolean stateValue) {
+        this.stateValue = stateValue;
     }
-
-    public boolean getValue() {
-        return myState.value;
-    }
-
-    public void addValue(boolean value) {
-        myState.value = value;
-    }*/
 }
