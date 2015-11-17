@@ -1,5 +1,6 @@
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.PlatformDataKeys;
+import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.Messages;
 
@@ -15,7 +16,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.util.ArrayList;
 
-public class Main {
+public class Main implements MainLayout.MenuInterface {
     private static final String RES_PATH = "/app/src/main/res";
     private static final String EXT_PNG = ".png";
     private static final String EXT_JPG = ".jpg";
@@ -55,9 +56,8 @@ public class Main {
 
     enum ChoiceType {
         ASSET,
-        PROJECT
+        PROJECT;
     }
-
     public Main(AnActionEvent e) {
         project = e.getData(PlatformDataKeys.PROJECT);
         mainLayout = new MainLayout();
@@ -66,6 +66,8 @@ public class Main {
         frame.setContentPane(mainLayout.getMainPanel());
         frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         frame.setLocation(dim.width / 2 - frame.getSize().width / 2, dim.height / 2 - frame.getSize().height / 2);
+        MainLayout.MenuInterface menuInterface = this;
+        mainLayout.setupToolbar(menuInterface);
 
         initLayout();
 
@@ -111,6 +113,18 @@ public class Main {
         setCheckBoxListeners();
 
         setExtensionListener();
+    }
+
+    @Override
+    public void closeProgram() {
+        frame.dispatchEvent(new WindowEvent(frame, WindowEvent.WINDOW_CLOSING));
+    }
+
+    @Override
+    public void resetDefaults() {
+        PersistDialogService persisted = ServiceManager.getService(project, PersistDialogService.class);
+        persisted.setStateValue(true);
+        persisted.loadState(persisted);
     }
 
     private void checkTextValidity(String text) {

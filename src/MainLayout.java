@@ -1,4 +1,5 @@
 import javax.swing.*;
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class MainLayout {
@@ -23,6 +24,39 @@ public class MainLayout {
     private JComboBox assetFileExtension;
     private JLabel assetName;
     private JLabel messageLabel;
+    private JToolBar toolbar;
+
+    public interface MenuInterface {
+        void closeProgram();
+
+        void resetDefaults();
+    }
+
+    public void setupToolbar(MenuInterface menuInterface) {
+        JMenuBar menuBar = new JMenuBar();
+        JMenu file = new JMenu("File");
+        JMenuItem close = new JMenuItem("Close");
+        file.add(close);
+        close.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                menuInterface.closeProgram();
+            }
+        });
+
+        JMenu settings = new JMenu("Settings");
+        JMenuItem defaults = new JMenuItem("Reset default properties");
+        settings.add(defaults);
+        defaults.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                menuInterface.resetDefaults();
+            }
+        });
+        menuBar.add(file);
+        menuBar.add(settings);
+        toolbar.add(menuBar);
+    }
 
     public void setLocationDirectory(String dir) {
         workingDirectoryLocationLabel.setText(dir);
