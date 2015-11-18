@@ -18,7 +18,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.util.ArrayList;
 
-public class Main implements MainLayout.MenuInterface, FileChooser.ChooserCallback {
+public class Main implements MainLayout.MenuInterface, FileChooser.ChooserCallback, ExtensionManager.ExtensionManagerListener {
     private static final String RES_PATH = "/app/src/main/res";
 
 
@@ -48,11 +48,12 @@ public class Main implements MainLayout.MenuInterface, FileChooser.ChooserCallba
     private Color errorColor = new Color(187, 54, 58);
     private Color successColor = new Color(84, 187, 68);
 
+
+
     enum ChoiceType {
         ASSET,
-        PROJECT
+        PROJECT;
     }
-
     public Main(AnActionEvent e) {
         project = e.getData(PlatformDataKeys.PROJECT);
         mainLayout = new MainLayout();
@@ -110,6 +111,11 @@ public class Main implements MainLayout.MenuInterface, FileChooser.ChooserCallba
     }
 
     @Override
+    public void extensionChanged(String extension) {
+        assetExtension = extension;
+    }
+
+    @Override
     public void closeProgram() {
         frame.dispatchEvent(new WindowEvent(frame, WindowEvent.WINDOW_CLOSING));
     }
@@ -133,7 +139,7 @@ public class Main implements MainLayout.MenuInterface, FileChooser.ChooserCallba
 
     private void setExtensionListener() {
         ExtensionManager extensionManager = new ExtensionManager();
-        assetExtension = extensionManager.manageBox(mainLayout.getAssetFileExtension());
+        assetExtension = extensionManager.manageBox(mainLayout.getAssetFileExtension(), this);
     }
 
     @Override
@@ -175,6 +181,7 @@ public class Main implements MainLayout.MenuInterface, FileChooser.ChooserCallba
         assetDirectory = null;
         mainLayout.setAssetFolderLabel("Not Set");
         mainLayout.getImagePreviewLabel().setText("No folder selected.");
+        mainLayout.getAssetFileExtension().setSelectedIndex(0);
         if(mainLayout.getImagePreviewLabel().getIcon() != null) {
             mainLayout.getImagePreviewLabel().setIcon(null);
         }

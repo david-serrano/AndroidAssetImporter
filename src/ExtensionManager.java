@@ -9,8 +9,12 @@ public class ExtensionManager {
     private static final String EXT_BMP = ".bmp";
     private static String extension;
 
-    public String manageBox(JComboBox assetFileExtension) {
-        extension = EXT_JPG;
+    public interface ExtensionManagerListener {
+        void extensionChanged(String extension);
+    }
+
+    public String manageBox(JComboBox assetFileExtension, ExtensionManagerListener listener) {
+        extension = EXT_PNG;
         assetFileExtension.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -21,6 +25,7 @@ public class ExtensionManager {
                 } else if (assetFileExtension.getSelectedIndex() == 2) {
                     extension = EXT_BMP;
                 }
+                listener.extensionChanged(extension);
             }
         });
         return extension;
