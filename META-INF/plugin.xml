@@ -2,7 +2,7 @@
     <id>com.davy307.androidassetimporter</id>
     <name>Android Asset Importer</name>
     <version>2.0.2</version>
-    <vendor email="davy307@gmail.com" url="https://github.com/davy307/">Independent development</vendor>
+    <vendor email="davy307@gmail.com" url="https://github.com/davy307/">David Serrano Galicia</vendor>
 
     <description><![CDATA[
       This plugin is designed to facilitate the process of importing multiple assets into Android Studio in a painless manner.<BR><BR>
@@ -48,8 +48,8 @@
     </project-components>
 
     <actions>
-        <group id="MyPlugin.AssetImport" text="Asset Importer" description="Asset Import">
-            <action id="MyPlugin.OpenFilePicker" class="InfoDialog" text="Open" description="Open Asset Importer"/>
+        <group id="androidassetimporter.AssetImport" text="Asset Importer" description="Asset Import">
+            <action id="androidassetimporter.AssetImport.OpenFilePicker" class="InfoDialog" text="Open" description="Open Asset Importer"/>
             <add-to-group group-id="MainMenu" relative-to-action="HelpMenu" anchor="after"/>
         </group>
     </actions>
