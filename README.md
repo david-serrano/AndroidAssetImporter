@@ -1,6 +1,7 @@
 # AndroidAssetImporter
 An Android Studio plugin designed to facilitate importing assets into your Android project in an easy and painless manner. No more copy and pasting!
-Find out more from the [Intellij Plugin Repo](https://plugins.jetbrains.com/plugin/8023)
+- Find out more from the [Intellij Plugin Repo](https://plugins.jetbrains.com/plugin/8023)
+
 #Usage
 - Select an Android Project top level folder 
 - Select a folder with appropriate assets, following the agreed naming convention. 
@@ -10,7 +11,7 @@ Find out more from the [Intellij Plugin Repo](https://plugins.jetbrains.com/plug
 
 #IMPORTANT
 - If you're getting a PluginException in your IDE when first trying to run the plugin, please make sure that you are running against some version of JDK 1.8.
-Steps for this are: 
+- Steps for this are: 
 - Download the latest [JDK version](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html) and install it.
 - Edit your JAVA_HOME environment variable for Windows or as appropriate for other OS's to point at the new JDK directory.
 - Restart the IDE.
