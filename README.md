@@ -8,7 +8,7 @@ An Android Studio plugin designed to facilitate importing assets into your Andro
 - Rename your asset. 
 - Select densities from list of available ones. 
 - Import! (if folders don't exist they will be created automatically)
-- 
+
 #IMPORTANT
 - if you're getting a PluginException in your IDE when first trying to run the plugin, please make sure that you are running against some version of JDK 1.8.
 - Steps for this are download the latest [JDK version](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html)
